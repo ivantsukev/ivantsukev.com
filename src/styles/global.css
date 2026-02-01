@@ -1,0 +1,278 @@
+/* Google Fonts - must be first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-bg-primary text-text-primary;
+    font-family: 'Source Serif 4', Georgia, serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  /* Headings use display font */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-primary font-semibold leading-tight;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1 {
+    @apply text-display-1;
+  }
+
+  h2 {
+    @apply text-display-2;
+  }
+
+  h3 {
+    @apply text-display-3;
+  }
+
+  p {
+    @apply text-text-secondary;
+  }
+
+  /* Links with animated underline */
+  a {
+    @apply text-accent transition-all duration-200 relative;
+  }
+
+  a:hover {
+    @apply text-accent-hover;
+  }
+
+  /* Code styling */
+  code {
+    @apply bg-bg-tertiary px-1.5 py-0.5 rounded text-sm;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  pre {
+    @apply bg-bg-tertiary p-4 rounded-lg overflow-x-auto border border-border;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  pre code {
+    @apply bg-transparent p-0;
+  }
+
+  blockquote {
+    @apply border-l-4 border-accent pl-4 italic text-text-secondary my-6;
+  }
+
+  hr {
+    @apply border-border my-8;
+  }
+
+  ul, ol {
+    @apply text-text-secondary;
+  }
+
+  ::selection {
+    background: rgba(74, 158, 255, 0.3);
+  }
+}
+
+@layer components {
+  /* Prose container for articles */
+  .prose {
+    @apply max-w-prose mx-auto;
+  }
+
+  .prose h1 {
+    @apply mb-4;
+  }
+
+  .prose h2 {
+    @apply mt-12 mb-4;
+  }
+
+  .prose h3 {
+    @apply mt-8 mb-3;
+  }
+
+  .prose p {
+    @apply mb-6 text-body;
+  }
+
+  .prose ul, .prose ol {
+    @apply mb-6 pl-6;
+  }
+
+  .prose ul {
+    @apply list-disc;
+  }
+
+  .prose ol {
+    @apply list-decimal;
+  }
+
+  .prose li {
+    @apply mb-2;
+  }
+
+  .prose a {
+    @apply underline underline-offset-4 decoration-accent/50 hover:decoration-accent;
+  }
+
+  .prose img {
+    @apply rounded-lg my-8;
+  }
+
+  .prose blockquote {
+    @apply my-6;
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    background: linear-gradient(135deg, #4A9EFF 0%, #A78BFA 50%, #4A9EFF 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  /* Card with glow effect */
+  .card-glow {
+    @apply bg-bg-secondary rounded-lg border border-border transition-all duration-300;
+    position: relative;
+  }
+
+  .card-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card-glow:hover::before {
+    background: linear-gradient(135deg, #4A9EFF, #A78BFA);
+    opacity: 1;
+  }
+
+  .card-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px -10px rgba(74, 158, 255, 0.2);
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, #4A9EFF 0%, #5BA8FF 100%);
+    color: #0B0D0F;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px -5px rgba(74, 158, 255, 0.4);
+    color: #0B0D0F;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200 border border-border text-text-primary;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .btn-ghost:hover {
+    @apply border-accent bg-accent-muted;
+    color: #E8EAED;
+  }
+
+  /* Animated underline for links */
+  .link-underline {
+    @apply relative;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Staggered animation delays */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+
+  /* Background effects */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(74, 158, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74, 158, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+  }
+
+  /* Gradient orb */
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-xs font-semibold tracking-wider uppercase text-accent mb-4;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Keyframe for gradient shift */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

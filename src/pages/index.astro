@@ -1,11 +1,103 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import profileImage from '../assets/ivan-tsukev.jpg';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = (await getCollection('statii', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Иван Цукев | Мисли за бъдещето на интелигентността">
+  <!-- Hero Section -->
+  <section class="min-h-[70vh] flex flex-col justify-center max-w-prose mx-auto relative">
+    <!-- Additional decorative elements for hero -->
+    <div class="absolute top-1/4 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl"></div>
+
+    <div class="opacity-0 animate-fade-in-up">
+      <!-- Hero content with photo beside text -->
+      <div class="flex items-start gap-6 md:gap-8 mb-6">
+        <!-- Profile photo with decorative elements -->
+        <div class="relative flex-shrink-0 group">
+          <!-- Decorative corner accents -->
+          <div class="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-accent/60"></div>
+          <div class="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-accent-secondary/60"></div>
+
+          <!-- Subtle glow behind -->
+          <div class="absolute inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/20 rounded-lg blur-xl opacity-60 group-hover:opacity-80 transition-opacity"></div>
+
+          <!-- Photo -->
+          <Image
+            src={profileImage}
+            alt="Иван Цукев"
+            class="relative w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border border-border/50 shadow-lg"
+            width={96}
+            height={96}
+          />
+        </div>
+
+        <!-- Name and greeting -->
+        <div class="pt-1">
+          <p class="text-text-muted text-sm font-display mb-1">Здравей, аз съм</p>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-none">
+            <span class="gradient-text">Иван Цукев</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Subtitle -->
+      <p class="text-xl md:text-2xl text-text-secondary max-w-lg leading-relaxed mb-8">
+        Пиша за нови технологии и как AI променя света около нас.
+        Създател на <a href="https://aula.bg" target="_blank" rel="noopener noreferrer" class="link-underline">Aula.bg</a>.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4">
+        <a href="/statii" class="btn-primary">
+          Към статиите
+        </a>
+        <a href="/about" class="btn-ghost">
+          За мен
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="max-w-prose mx-auto mt-12">
+    <div class="opacity-0 animate-fade-in-up stagger-2">
+      <span class="section-label">Последни статии</span>
+      <h2 class="text-2xl font-semibold mb-8 text-text-primary">Последно написани</h2>
+    </div>
+
+    <div class="space-y-6 opacity-0 animate-fade-in-up stagger-3">
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          slug={post.slug}
+        />
+      ))}
+    </div>
+
+    <div class="mt-8 opacity-0 animate-fade-in-up stagger-4">
+      <a
+        href="/statii"
+        class="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors font-display text-sm"
+      >
+        Всички статии
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="opacity-0 animate-fade-in-up stagger-5">
+      <Newsletter />
+    </div>
+  </section>
 </Layout>

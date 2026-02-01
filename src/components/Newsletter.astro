@@ -1,0 +1,40 @@
+---
+// Newsletter form - ready for integration with Buttondown, ConvertKit, etc.
+---
+
+<section class="relative mt-16 p-[1px] rounded-xl bg-gradient-to-br from-accent via-accent-secondary to-accent overflow-hidden">
+  <!-- Inner content with solid background -->
+  <div class="relative bg-bg-secondary rounded-xl p-8">
+    <!-- Decorative glow orb -->
+    <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <span class="section-label">Бюлетин</span>
+
+    <h3 class="text-text-primary text-xl font-semibold mb-2 font-display">
+      Абонирай се за нови статии
+    </h3>
+    <p class="text-text-secondary mb-6">
+      Получавай мислите ми за AI и бъдещето директно в пощата си.
+    </p>
+
+    <form action="/newsletter/success" method="GET" class="flex flex-col sm:flex-row gap-3">
+      <input
+        type="email"
+        name="email"
+        placeholder="твоят@имейл.бг"
+        required
+        class="flex-1 bg-bg-tertiary border border-border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 transition-all font-body"
+      />
+      <button
+        type="submit"
+        class="btn-primary whitespace-nowrap"
+      >
+        Абонирай се
+      </button>
+    </form>
+
+    <p class="text-text-muted text-sm mt-4">
+      Без спам. Отписване по всяко време.
+    </p>
+  </div>
+</section>

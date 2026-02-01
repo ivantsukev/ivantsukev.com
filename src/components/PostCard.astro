@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  slug: string;
+}
+
+const { title, description, date, slug } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('bg-BG', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="card-glow p-6 group">
+  <a href={`/${slug}/`} class="block">
+    <time datetime={date.toISOString()} class="text-text-muted text-sm font-display">
+      {formattedDate}
+    </time>
+
+    <h3 class="text-text-primary text-xl font-semibold mt-2 mb-3 group-hover:text-accent transition-colors font-display leading-tight">
+      {title}
+    </h3>
+
+    <p class="text-text-secondary text-base line-clamp-2 mb-4">
+      {description}
+    </p>
+
+    <span class="inline-flex items-center gap-1.5 text-accent text-sm font-medium font-display group-hover:gap-2.5 transition-all">
+      Прочети
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </span>
+  </a>
+</article>

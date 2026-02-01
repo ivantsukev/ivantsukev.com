@@ -1,0 +1,45 @@
+---
+const navLinks = [
+  { href: '/', label: 'Начало' },
+  { href: '/statii', label: 'Статии' },
+  { href: '/interviews', label: 'Интервюта' },
+  { href: '/about', label: 'За мен' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 border-b border-border/50 backdrop-blur-md bg-bg-primary/80">
+  <nav class="max-w-prose mx-auto px-4 py-4 flex items-center justify-between">
+    <a
+      href="/"
+      class="text-text-primary font-semibold text-lg hover:text-accent transition-colors font-display"
+    >
+      Иван Цукев
+    </a>
+
+    <ul class="flex items-center gap-6">
+      {navLinks.map(({ href, label }) => {
+        const isActive = currentPath === href || (href !== '/' && currentPath.startsWith(href));
+        return (
+          <li>
+            <a
+              href={href}
+              class:list={[
+                'relative text-sm font-medium transition-colors font-display',
+                isActive
+                  ? 'text-text-primary'
+                  : 'text-text-secondary hover:text-text-primary',
+              ]}
+            >
+              {label}
+              {isActive && (
+                <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-accent rounded-full shadow-[0_0_8px_rgba(74,158,255,0.5)]" />
+              )}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+</header>
