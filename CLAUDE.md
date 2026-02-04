@@ -40,3 +40,7 @@ Vanilla CSS with scoped styles in `<style>` blocks within each component. Styles
 
 - `astro.config.mjs`: Astro configuration (currently minimal, ready for integrations)
 - `tsconfig.json`: Uses Astro's strict TypeScript preset
+
+## Integrations
+
+Brevo is used for email newsletter subscriptions.
