@@ -10,9 +10,6 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'compile',
   }),
-  redirects: {
-    '/за-мен': { status: 301, destination: '/about/' },
-  },
   integrations: [
     tailwind(),
     sitemap(),
