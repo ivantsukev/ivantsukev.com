@@ -45,9 +45,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
-
-    <!-- RSS -->
-    <link rel="alternate" type="application/rss+xml" title="Иван Цукев" href="/rss.xml" />
   </head>
   <body class="flex flex-col min-h-screen bg-grid bg-noise">
     <!-- Background gradient orbs -->

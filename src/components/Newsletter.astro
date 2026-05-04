@@ -1,5 +1,6 @@
 ---
-// Newsletter form with Brevo integration
+import { config } from '../config';
+const turnstileSiteKey = config.turnstile.siteKey;
 ---
 
 <section class="relative mt-16 p-[1px] rounded-xl bg-gradient-to-br from-accent via-accent-secondary to-accent overflow-hidden">
@@ -15,22 +16,28 @@
       Получавай мислите ми за AI и бъдещето директно в пощата си.
     </p>
 
-    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
-      <input
-        type="email"
-        name="email"
-        id="newsletter-email"
-        placeholder="твоят@имейл.бг"
-        required
-        class="flex-1 bg-bg-tertiary border border-border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 transition-all font-body"
-      />
-      <button
-        type="submit"
-        id="newsletter-submit"
-        class="btn-primary whitespace-nowrap"
-      >
-        Абонирай се
-      </button>
+    <form id="newsletter-form" class="flex flex-col gap-3" data-sitekey={turnstileSiteKey}>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          name="email"
+          id="newsletter-email"
+          placeholder="твоят@имейл.бг"
+          required
+          maxlength="254"
+          class="flex-1 bg-bg-tertiary border border-border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 transition-all font-body"
+        />
+        <button
+          type="submit"
+          id="newsletter-submit"
+          class="btn-primary whitespace-nowrap"
+        >
+          Абонирай се
+        </button>
+      </div>
+      {turnstileSiteKey && (
+        <div id="newsletter-turnstile" class="cf-turnstile" data-sitekey={turnstileSiteKey} data-size="flexible"></div>
+      )}
     </form>
 
     <p id="newsletter-message" class="text-text-muted text-sm mt-4">
@@ -39,16 +46,40 @@
   </div>
 </section>
 
+{turnstileSiteKey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer></script>
+)}
+
 <script>
   const form = document.getElementById('newsletter-form') as HTMLFormElement;
   const emailInput = document.getElementById('newsletter-email') as HTMLInputElement;
   const submitBtn = document.getElementById('newsletter-submit') as HTMLButtonElement;
   const message = document.getElementById('newsletter-message') as HTMLParagraphElement;
+  const hasTurnstile = !!form.dataset.sitekey;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = emailInput.value;
+    const email = emailInput.value.trim();
+    let turnstileToken = '';
+
+    if (hasTurnstile) {
+      const tokenInput = form.querySelector<HTMLInputElement>(
+        'input[name="cf-turnstile-response"]',
+      );
+      turnstileToken = tokenInput?.value ?? '';
+      if (!turnstileToken) {
+        message.textContent = 'Изчакай проверката за бот да приключи.';
+        message.classList.remove('text-text-muted', 'text-green-400');
+        message.classList.add('text-red-400');
+        return;
+      }
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = '...';
 
@@ -56,26 +87,30 @@
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, turnstileToken }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         message.textContent = '✓ Благодаря! Провери имейла си.';
-        message.classList.remove('text-text-muted');
+        message.classList.remove('text-text-muted', 'text-red-400');
         message.classList.add('text-green-400');
         emailInput.value = '';
       } else {
-        throw new Error(data.error);
+        throw new Error(data.error || 'subscribe_failed');
       }
-    } catch (error) {
+    } catch {
       message.textContent = 'Грешка. Опитай отново.';
-      message.classList.remove('text-text-muted');
+      message.classList.remove('text-text-muted', 'text-green-400');
       message.classList.add('text-red-400');
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Абонирай се';
+      if (hasTurnstile && (window as any).turnstile) {
+        const widget = document.getElementById('newsletter-turnstile');
+        if (widget) (window as any).turnstile.reset(widget);
+      }
     }
   });
 </script>
