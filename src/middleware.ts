@@ -6,9 +6,15 @@ const LEGACY_REDIRECTS: Record<string, string> = {
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const target = LEGACY_REDIRECTS[context.url.pathname];
+  const path = context.url.pathname;
+  const target = LEGACY_REDIRECTS[path];
   if (target) {
-    return context.redirect(target, 301);
+    return new Response(null, {
+      status: 301,
+      headers: { Location: target, 'x-redirect-by': 'middleware' },
+    });
   }
-  return next();
+  const response = await next();
+  response.headers.set('x-mw-saw-path', path);
+  return response;
 });
