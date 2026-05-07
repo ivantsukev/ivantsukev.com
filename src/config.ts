@@ -3,6 +3,8 @@ export const config = {
     listId: 3,
   },
   turnstile: {
-    siteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '',
+    // Public by design — rendered into browser HTML for every visitor.
+    // Build-time config lives in code; runtime secrets stay in Cloudflare env.
+    siteKey: '0x4AAAAAADIyQSInBgmNfRod',
   },
 };
