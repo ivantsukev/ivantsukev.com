@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Newsletter from '../../components/Newsletter.astro';
+---
+
+<Layout
+  title="Нюзлетър | Иван Цукев"
+  description="Записване за нюзлетъра на Иван Цукев — нови статии и полезни идеи за AI, директно в пощата ти."
+>
+  <section class="max-w-prose mx-auto pt-8 pb-12">
+    <div class="opacity-0 animate-fade-in-up">
+      <span class="section-label">Нюзлетър</span>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
+        AI се движи бързо. Едно писмо в пощата ти,
+        <span class="gradient-text">когато има значение.</span>
+      </h1>
+      <p class="text-xl text-text-secondary leading-relaxed">
+        Когато публикувам нова статия или попадна на инструмент, идея или мисъл за AI, която си струва — ще те потърся в пощата. Без графици, без шум.
+      </p>
+    </div>
+
+    <div class="opacity-0 animate-fade-in-up stagger-2">
+      <Newsletter />
+    </div>
+
+    <div class="mt-12 opacity-0 animate-fade-in-up stagger-3">
+      <h2 class="text-text-primary text-lg font-semibold mb-5 font-display">Какво да очакваш</h2>
+      <ul class="space-y-3 text-text-secondary">
+        <li class="flex gap-3">
+          <span class="text-accent flex-shrink-0 select-none" aria-hidden="true">—</span>
+          <span>Известия за нови статии</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent flex-shrink-0 select-none" aria-hidden="true">—</span>
+          <span>AI инструменти, които изпробвам и ползвам в работата си</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent flex-shrink-0 select-none" aria-hidden="true">—</span>
+          <span>Понякога: мисли и наблюдения, които не публикувам никъде другаде</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Layout>
